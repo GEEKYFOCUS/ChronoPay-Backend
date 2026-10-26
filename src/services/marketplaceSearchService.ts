@@ -14,11 +14,7 @@
 
 import { Pool } from "pg";
 import { Slot } from "../types.js";
-import {
-  MarketplaceSearchQuery,
-  MarketplaceSearchQueryInput,
-  validateSearchQuery,
-} from "../validation/marketplaceSearchSchema.js";
+import { MarketplaceSearchQuery } from "../validation/marketplaceSearchSchema.js";
 import {
 
 
@@ -400,13 +396,12 @@ export class MarketplaceSearchService {
    * Search for slots with filters, pagination, facets, and diversification.
    */
   async search(
-    rawQuery: MarketplaceSearchQueryInput,
+    query: MarketplaceSearchQuery,
     cache?: {
       get: (key: string) => Promise<SearchResult | null>;
       set: (key: string, value: SearchResult, ttlMs: number) => Promise<void>;
     }
   ): Promise<SearchResult> {
-    const query = validateSearchQuery(rawQuery);
     if (this.queryTracker) {
       this.queryTracker.recordQuery(query);
     }

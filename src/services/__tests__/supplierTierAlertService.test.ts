@@ -3,6 +3,8 @@ import {
   TIER_BOUNDARIES,
   type SupplierTierAlertConfig,
   type SupplierTierAlert,
+  type AlertType,
+  type RatingTier,
 } from "../supplierTierAlertService.js";
 import {
   ReputationTransparencyService,

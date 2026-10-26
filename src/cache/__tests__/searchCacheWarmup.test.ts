@@ -23,10 +23,7 @@ import {
   CacheLayer,
   SearchServiceInterface,
 } from "../searchCacheWarmup.js";
-import {
-  MarketplaceSearchQuery,
-  validateSearchQuery,
-} from "../../validation/marketplaceSearchSchema.js";
+import { MarketplaceSearchQuery } from "../../validation/marketplaceSearchSchema.js";
 import { SearchResult, MarketplaceSearchService } from "../../services/marketplaceSearchService.js";
 
 describe("SearchCacheWarmup", () => {
@@ -34,25 +31,25 @@ describe("SearchCacheWarmup", () => {
   let mockSearchService: jest.Mocked<SearchServiceInterface>;
   let mockCache: jest.Mocked<CacheLayer>;
 
-  const sampleQuery1: MarketplaceSearchQuery = validateSearchQuery({
+  const sampleQuery1: MarketplaceSearchQuery = {
     page: 1,
     limit: 10,
     categories: ["plumbing"],
     sortBy: "relevance",
-  });
+  };
 
-  const sampleQuery2: MarketplaceSearchQuery = validateSearchQuery({
+  const sampleQuery2: MarketplaceSearchQuery = {
     page: 1,
     limit: 10,
     categories: ["haircut"],
     sortBy: "rating",
-  });
+  };
 
-  const sampleQuery3: MarketplaceSearchQuery = validateSearchQuery({
+  const sampleQuery3: MarketplaceSearchQuery = {
     page: 2,
     limit: 20,
     sortBy: "price",
-  });
+  };
 
   const sampleSearchResult: SearchResult = {
     slots: [],
@@ -81,31 +78,31 @@ describe("SearchCacheWarmup", () => {
 
   describe("generateQueryKey & Query Normalization", () => {
     it("should generate identical keys for equivalent queries regardless of category order", () => {
-      const q1: MarketplaceSearchQuery = validateSearchQuery({
+      const q1: MarketplaceSearchQuery = {
         page: 1,
         limit: 10,
         categories: ["plumbing", "haircut"],
         sortBy: "relevance",
-      });
-      const q2: MarketplaceSearchQuery = validateSearchQuery({
+      };
+      const q2: MarketplaceSearchQuery = {
         page: 1,
         limit: 10,
         categories: ["haircut", "plumbing"],
         sortBy: "relevance",
-      });
+      };
 
       expect(generateQueryKey(q1)).toBe(generateQueryKey(q2));
     });
 
     it("should handle default parameter fallbacks, price range, rating range, and time window", () => {
-      const complexQuery: MarketplaceSearchQuery = validateSearchQuery({
+      const complexQuery: MarketplaceSearchQuery = {
         page: 1,
         limit: 10,
         sortBy: "relevance",
         priceRange: { min: 1000, max: 5000 },
         ratingRange: { min: 4.0, max: 5.0 },
         timeWindow: { startTime: 1700000000, endTime: 1700003600 },
-      });
+      };
 
       const key = generateQueryKey(complexQuery);
       expect(key).toContain('"priceRange":{"min":1000,"max":5000}');
@@ -114,9 +111,9 @@ describe("SearchCacheWarmup", () => {
     });
 
     it("should generate distinct keys for queries with different sorting or pagination", () => {
-      const q1: MarketplaceSearchQuery = validateSearchQuery({ page: 1, limit: 10, sortBy: "relevance" });
-      const q2: MarketplaceSearchQuery = validateSearchQuery({ page: 1, limit: 10, sortBy: "rating" });
-      const q3: MarketplaceSearchQuery = validateSearchQuery({ page: 2, limit: 10, sortBy: "relevance" });
+      const q1: MarketplaceSearchQuery = { page: 1, limit: 10, sortBy: "relevance" };
+      const q2: MarketplaceSearchQuery = { page: 1, limit: 10, sortBy: "rating" };
+      const q3: MarketplaceSearchQuery = { page: 2, limit: 10, sortBy: "relevance" };
 
       expect(generateQueryKey(q1)).not.toBe(generateQueryKey(q2));
       expect(generateQueryKey(q1)).not.toBe(generateQueryKey(q3));
@@ -152,8 +149,8 @@ describe("SearchCacheWarmup", () => {
 
     it("should tie-break equal frequency queries deterministically by query key", () => {
       const now = Date.now();
-      const qA: MarketplaceSearchQuery = validateSearchQuery({ page: 1, limit: 10, sortBy: "price" });
-      const qB: MarketplaceSearchQuery = validateSearchQuery({ page: 1, limit: 10, sortBy: "rating" });
+      const qA: MarketplaceSearchQuery = { page: 1, limit: 10, sortBy: "price" };
+      const qB: MarketplaceSearchQuery = { page: 1, limit: 10, sortBy: "rating" };
 
       queryTracker.recordQuery(qA, now);
       queryTracker.recordQuery(qB, now);
@@ -181,7 +178,7 @@ describe("SearchCacheWarmup", () => {
       const now = Date.now();
 
       for (let i = 0; i < 10; i++) {
-        smallTracker.recordQuery(validateSearchQuery({ page: i + 1, limit: 10, sortBy: "relevance" }), now);
+        smallTracker.recordQuery({ page: i + 1, limit: 10, sortBy: "relevance" }, now);
       }
 
       expect(smallTracker.size()).toBe(5);
@@ -369,7 +366,7 @@ describe("SearchCacheWarmup", () => {
     describe("Edge Case: Rapid Taxonomy Edits", () => {
       it("should cancel superseded warmup runs when a new commit arrives mid-flight", async () => {
         for (let i = 0; i < 5; i++) {
-          queryTracker.recordQuery(validateSearchQuery({ page: i + 1, limit: 10, sortBy: "relevance" }));
+          queryTracker.recordQuery({ page: i + 1, limit: 10, sortBy: "relevance" });
         }
 
         // Slow down searchService to allow triggering a second commit mid-flight

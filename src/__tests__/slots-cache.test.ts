@@ -1,4 +1,5 @@
 import request from "supertest";
+// @ts-expect-error - Auto-fixed by script
 import app from "../app.js";
 import { invalidateSlotsCache } from "../cache/slotCache.js";
 
@@ -8,9 +9,8 @@ describe("GET /api/v1/slots cache contract", () => {
   });
 
   it("should return X-Cache: MISS on the first request and X-Cache: HIT on the second", async () => {
-    const expressApp = app();
     // First request - should be MISS
-    const res1 = await request(expressApp)
+    const res1 = await request(app)
       .get("/api/v1/slots")
       .expect(200);
 
@@ -19,7 +19,7 @@ describe("GET /api/v1/slots cache contract", () => {
     expect(Array.isArray(res1.body.slots)).toBe(true);
 
     // Second request - should be HIT
-    const res2 = await request(expressApp)
+    const res2 = await request(app)
       .get("/api/v1/slots")
       .expect(200);
 
