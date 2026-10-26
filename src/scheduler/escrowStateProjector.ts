@@ -130,14 +130,6 @@ const STATUS_TRANSITIONS: Record<
     { kind: "Refunded", next: "cancelled" },
     { kind: "Slashed", next: "expired" },
   ],
-  hold_placed: [
-    { kind: "Held", next: "confirmed" },
-    { kind: "Captured", next: "firm" },
-    { kind: "Released", next: "cancelled" },
-    { kind: "Refunded", next: "cancelled" },
-    { kind: "Slashed", next: "expired" },
-  ],
-  hold_refunded: [],
   cancelled: [],
   expired: [],
 };
