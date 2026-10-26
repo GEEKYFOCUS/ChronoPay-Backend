@@ -26,7 +26,7 @@ describe("InMemorySupplierCancellationOverrideStore", () => {
 
   beforeEach(() => {
     auditLogger = {
-      log: jest.fn<(...args: any[]) => Promise<any>>().mockResolvedValue(undefined),
+      log: jest.fn().mockResolvedValue(undefined),
     } as unknown as jest.Mocked<AuditLogger>;
     store = new InMemorySupplierCancellationOverrideStore({
       auditLogger,

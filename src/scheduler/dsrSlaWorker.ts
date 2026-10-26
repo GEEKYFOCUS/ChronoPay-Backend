@@ -22,6 +22,7 @@ import {
   dsrSlaService as defaultDsrSlaService,
   ALERT_THRESHOLDS,
   type AlertThreshold,
+  type DsrRecord,
 } from "../services/dsrSlaService.js";
 import { defaultAuditLogger, type AuditLogger } from "../services/auditLogger.js";
 

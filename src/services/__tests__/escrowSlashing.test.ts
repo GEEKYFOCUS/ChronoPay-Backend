@@ -462,7 +462,8 @@ describe("getProposal / listProposals", () => {
     });
 
     const copy = svc.getProposal(proposal.proposalId)!;
-    (copy as any).status = "executed";
+    // @ts-expect-error — intentionally testing immutability of the copy
+    copy.status = "executed";
 
     // The internal state must not have changed
     expect(svc.getProposal(proposal.proposalId)!.status).toBe("pending_approval");

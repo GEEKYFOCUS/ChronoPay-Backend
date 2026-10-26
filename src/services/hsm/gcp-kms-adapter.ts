@@ -42,16 +42,16 @@
 import { createVerify } from "crypto";
 import { KeyManagementServiceClient } from "@google-cloud/kms";
 import type { IHsmAdapter } from "./hsm-adapter.interface.js";
-import {
-  HsmError,
-  type SignRequest,
-  type SignResponse,
-  type VerifyRequest,
-  type VerifyResponse,
-  type RotateRequest,
-  type RotateResponse,
-  type SigningAlgorithm,
+import type {
+  SignRequest,
+  SignResponse,
+  VerifyRequest,
+  VerifyResponse,
+  RotateRequest,
+  RotateResponse,
+  SigningAlgorithm,
 } from "./types.js";
+import { HsmError } from "./types.js";
 import { RetryPolicy, DEFAULT_RETRY_CONFIG } from "../../utils/retry-policy.js";
 
 // ---------------------------------------------------------------------------

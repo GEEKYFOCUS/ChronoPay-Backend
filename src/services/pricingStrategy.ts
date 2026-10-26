@@ -23,7 +23,7 @@ import {
 // ─── Core types ───────────────────────────────────────────────────────────────
 
 /** Identifier for a registered pricing strategy. */
-export type StrategyId = "fixed" | "time_decay" | "demand_based" | "flat-rate";
+export type StrategyId = "fixed" | "time_decay" | "demand_based";
 
 /** Inputs that every strategy receives. */
 export interface PricingInput {
@@ -47,8 +47,6 @@ export type StrategyConfig = FixedConfig | TimeDecayConfig | DemandBasedConfig;
 export interface FixedConfig {
   strategy: "fixed";
 }
-
-export const DECAY_WINDOW_MS = 24 * 60 * 60 * 1000;
 
 export interface TimeDecayConfig {
   strategy: "time_decay";
@@ -215,7 +213,6 @@ export const demandBasedStrategy: PricingStrategy = (input) => {
 
 const REGISTRY: Record<StrategyId, PricingStrategy> = {
   fixed: fixedStrategy,
-  "flat-rate": fixedStrategy,
   time_decay: timeDecayStrategy,
   demand_based: demandBasedStrategy,
 };

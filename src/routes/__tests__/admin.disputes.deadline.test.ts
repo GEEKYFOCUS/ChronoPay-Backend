@@ -13,9 +13,11 @@ import request from "supertest";
 import { createApp } from "../../app.js";
 import { resetDisputesState } from "../admin.js";
 import { defaultAuditLogger } from "../../services/auditLogger.js";
+import { addSeniorArbiter } from "../../services/disputeAppeals.js";
 import {
   startDisputeDeadlineScheduler,
   stopDisputeDeadlineScheduler,
+  isDisputeDeadlineSchedulerRunning,
 } from "../../scheduler/disputeDeadlineScheduler.js";
 
 const ADMIN_TOKEN = "test-admin-token";
