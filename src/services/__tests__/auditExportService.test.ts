@@ -143,6 +143,7 @@ describe("AuditExportService", () => {
 
 describe("AuditExportService — DP analytics summary", () => {
   let tempDir: string;
+  let logger: AuditLogger;
 
   /** Create a service with an isolated large-budget tracker and DP enabled. */
   function makeService(auditLogFile: string, budgetOverrides?: Record<string, number>): AuditExportService {

@@ -3,6 +3,7 @@
 // compatibility with Jest's --experimental-vm-modules ESM test environment.
 import * as rruleLib from "rrule";
 import type { RRule as RRuleType } from "rrule";
+import rruleLib from "rrule";
 import { AuditLogger, defaultAuditLogger } from "./auditLogger.js";
 import { SupplierTimezoneContext } from "../modules/slots/slot-repository.js";
 import {

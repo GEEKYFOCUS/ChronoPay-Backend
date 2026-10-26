@@ -9,7 +9,8 @@
 import { describe, it, expect, jest } from "@jest/globals";
 import { KeyManagementServiceClient } from "@google-cloud/kms";
 import { GcpKmsAdapter } from "../gcp-kms-adapter.js";
-import { HsmError, type SigningAlgorithm } from "../types.js";
+import { HsmError } from "../types.js";
+import type { SigningAlgorithm } from "../types.js";
 import { runHsmAdapterContractTests } from "./hsm-adapter.contract.js";
 
 // ---------------------------------------------------------------------------
@@ -48,7 +49,7 @@ function makeMockGcpClient(overrides: {
     );
   }
   if (overrides.asymmetricVerify) {
-    jest.spyOn(client as any, "asymmetricVerify").mockImplementation(
+    jest.spyOn(client, "asymmetricVerify").mockImplementation(
       overrides.asymmetricVerify as Parameters<typeof jest.spyOn>[1],
     );
   }

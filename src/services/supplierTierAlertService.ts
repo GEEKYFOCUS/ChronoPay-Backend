@@ -1,5 +1,6 @@
 import {
   ReputationTransparencyService,
+  DEFAULT_SIGNAL_CATEGORIES,
 } from "./reputationTransparencyService.js";
 import { InMemoryCache } from "../cache/inMemoryCache.js";
 
